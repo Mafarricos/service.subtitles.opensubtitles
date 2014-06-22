@@ -29,3 +29,15 @@ msgstr ""
 msgctxt "#32004"
 msgid "Login Details"
 msgstr ""
+
+msgctxt "#32005"
+msgid "Advanced Options"
+msgstr ""
+
+msgctxt "#32006"
+msgid "Enable search order"
+msgstr ""
+
+msgctxt "#32007"
+msgid "Language to appear first on search"
+msgstr ""

@@ -43,16 +43,13 @@ class OSDBServer:
         try:
           size, hash = hashFile(item['file_original_path'], item['rar'])
           log( __name__ ,"OpenSubtitles module hash [%s] and size [%s]" % (hash, size,))
-          searchlist.append({'sublanguageid' :",".join(item['3let_language']),
-                              'moviehash'    :hash,
-                              'moviebytesize':str(size)
-                            })
+          if item['1let_language']: searchlist.append({'sublanguageid' :",".join(item['1let_language']), 'moviehash'    :hash, 'moviebytesize':str(size)})		  
+          else: searchlist.append({'sublanguageid' :",".join(item['3let_language']), 'moviehash'    :hash, 'moviebytesize':str(size) })
         except:
-          pass    
-
-      searchlist.append({'sublanguageid':",".join(item['3let_language']),
-                          'query'       :OS_search_string
-                        })
+          pass 
+		  
+      if item['1let_language']: searchlist.append({'sublanguageid':",".join(item['1let_language']), 'query'       :OS_search_string })
+      else: searchlist.append({'sublanguageid':",".join(item['3let_language']), 'query'       :OS_search_string })
       search = self.server.SearchSubtitles( self.osdb_token, searchlist )
       if search["data"]:
         return search["data"] 

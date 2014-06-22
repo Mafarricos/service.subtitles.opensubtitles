@@ -22,6 +22,9 @@ __profile__    = xbmc.translatePath( __addon__.getAddonInfo('profile') ).decode(
 __resource__   = xbmc.translatePath( os.path.join( __cwd__, 'resources', 'lib' ) ).decode("utf-8")
 __temp__       = xbmc.translatePath( os.path.join( __profile__, 'temp') ).decode("utf-8")
 
+__subtitles__ 		= __addon__.getSetting( 'subtitles' )
+__firstlanguage__	= __addon__.getSetting( 'first-language' )
+
 if xbmcvfs.exists(__temp__):
   shutil.rmtree(__temp__)
 xbmcvfs.mkdirs(__temp__)
@@ -128,6 +131,7 @@ if params['action'] == 'search' or params['action'] == 'manualsearch':
   item['title']              = normalizeString(xbmc.getInfoLabel("VideoPlayer.OriginalTitle"))# try to get original title
   item['file_original_path'] = urllib.unquote(xbmc.Player().getPlayingFile().decode('utf-8'))# Full path of a playing file
   item['3let_language']      = [] #['scc','eng']
+  item['1let_language']      = [] #['scc','eng']  
 
   if 'searchstring' in params:
     item['mansearch'] = True
@@ -139,9 +143,11 @@ if params['action'] == 'search' or params['action'] == 'manualsearch':
     else:
       lan = xbmc.convertLanguage(lang,xbmc.ISO_639_2)
       if lan == "gre":
-        lan = "ell"
-
-    item['3let_language'].append(lan)
+        lan = "ell"		
+    if __subtitles__ == 'true':
+      if __firstlanguage__ == lang: item['1let_language'].append(lan)
+      else: item['3let_language'].append(lan)
+    else: item['3let_language'].append(lan)
 
   if item['title'] == "":
     log( __name__, "VideoPlayer.OriginalTitle not found")
@@ -162,6 +168,9 @@ if params['action'] == 'search' or params['action'] == 'manualsearch':
     stackPath = item['file_original_path'].split(" , ")
     item['file_original_path'] = stackPath[0][8:]
 
+  if item['1let_language']:
+    Search(item)
+    item['1let_language'] = []
   Search(item)
 
 elif params['action'] == 'download':
