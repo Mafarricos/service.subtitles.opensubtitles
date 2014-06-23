@@ -145,9 +145,12 @@ if params['action'] == 'search' or params['action'] == 'manualsearch':
       if lan == "gre":
         lan = "ell"		
     if __subtitles__ == 'true':
-      if __firstlanguage__ == lang: item['1let_language'].append(lan)
-      else: item['3let_language'].append(lan)
-    else: item['3let_language'].append(lan)
+      if __firstlanguage__ == lang:
+        item['1let_language'].append(lan)
+      else: 
+        item['3let_language'].append(lan)
+    else:
+      item['3let_language'].append(lan)
 
   if item['title'] == "":
     log( __name__, "VideoPlayer.OriginalTitle not found")
